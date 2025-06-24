@@ -7,4 +7,5 @@ public class DeliveryRequestDto {
     private Long purchaseId;
     private Boolean delivered;
     private Long statusId;
+    private Long userId;
 }

@@ -14,6 +14,7 @@ public class DeliveryMapper {
         delivery.setPurchaseId(deliveryRequestDto.getPurchaseId());
         delivery.setDelivered(deliveryRequestDto.getDelivered());
         delivery.setStatusId(deliveryRequestDto.getStatusId());
+        delivery.setUserId(deliveryRequestDto.getUserId());
         return delivery;
     }
 
@@ -22,6 +23,7 @@ public class DeliveryMapper {
         deliveryRequestDto.setPurchaseId(delivery.getPurchaseId());
         deliveryRequestDto.setDelivered(delivery.getDelivered());
         deliveryRequestDto.setStatusId(delivery.getStatusId());
+        deliveryRequestDto.setUserId(delivery.getUserId());
         return deliveryRequestDto;
     }
 
@@ -31,6 +33,7 @@ public class DeliveryMapper {
         deliveryResponseDto.setPurchaseId(delivery.getPurchaseId());
         deliveryResponseDto.setDelivered(delivery.getDelivered());
         deliveryResponseDto.setStatusId(delivery.getStatusId());
+        deliveryResponseDto.setUserId(delivery.getUserId());
         return deliveryResponseDto;
     }
 
