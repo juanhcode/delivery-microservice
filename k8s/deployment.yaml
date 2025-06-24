@@ -16,18 +16,18 @@ spec:
     spec:
       containers:
         - name: delivery-microservice
-          image: juanhoyos/microservice:delivery-v4
+          image: juanhoyos/microservice:delivery-v5
           ports:
             - containerPort: 8087
           env:
             - name: SERVER_PORT
               value: "8087"
-            - name: DB_USERNAME
+            - name: DATABASE_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: credentials
                   key: username
-            - name: DB_PASSWORD
+            - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: credentials
