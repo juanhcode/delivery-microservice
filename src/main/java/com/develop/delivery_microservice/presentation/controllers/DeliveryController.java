@@ -1,7 +1,9 @@
 package com.develop.delivery_microservice.presentation.controllers;
 import com.develop.delivery_microservice.application.dtos.DeliveryRequestDto;
 import com.develop.delivery_microservice.application.dtos.DeliveryResponseDto;
+import com.develop.delivery_microservice.application.dtos.DeliveryStatusResponseDto;
 import com.develop.delivery_microservice.domain.interfaces.DeliveryService;
+import com.develop.delivery_microservice.domain.interfaces.DeliveryStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -12,6 +14,10 @@ public class DeliveryController {
 
     @Autowired
     private DeliveryService deliveryService;
+    @Autowired
+    private DeliveryStatusService deliveryStatusService;
+
+
 
     @GetMapping
     public List<DeliveryResponseDto> listDeliveries() {
@@ -36,5 +42,10 @@ public class DeliveryController {
     @DeleteMapping("/{id}")
     public void deleteDelivery(@PathVariable Long id) {
         deliveryService.deleteDelivery(id);
+    }
+
+    @GetMapping("/status")
+    public List<DeliveryStatusResponseDto> getAllDeliveriesByStatus() {
+        return deliveryStatusService.getAllStatuses();
     }
 }
