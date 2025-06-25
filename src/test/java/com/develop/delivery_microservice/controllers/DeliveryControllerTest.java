@@ -103,4 +103,67 @@ class DeliveryControllerTest {
         assertEquals("CREATED", result.get(0).getName());
         verify(deliveryStatusService).getAllStatuses();
     }
+
+    @Test
+    void testGetDeliveryById_NotFound() {
+        when(deliveryService.getDeliveryById(99L))
+                .thenThrow(new RuntimeException("Delivery not found"));
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> {
+            deliveryController.getDeliveryById(99L);
+        });
+
+        assertEquals("Delivery not found", ex.getMessage());
+        verify(deliveryService).getDeliveryById(99L);
+    }
+
+    @Test
+    void testCreateDelivery_InvalidRequest() {
+        when(deliveryService.createDelivery(any()))
+                .thenThrow(new RuntimeException("Invalid delivery data"));
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> {
+            deliveryController.createDelivery(new DeliveryRequestDto());
+        });
+
+        assertEquals("Invalid delivery data", ex.getMessage());
+        verify(deliveryService).createDelivery(any());
+    }
+
+    @Test
+    void testUpdateDelivery_NotFound() {
+        when(deliveryService.updateDelivery(eq(42L), any()))
+                .thenThrow(new RuntimeException("Delivery not found"));
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> {
+            deliveryController.updateDelivery(42L, requestDto);
+        });
+
+        assertEquals("Delivery not found", ex.getMessage());
+        verify(deliveryService).updateDelivery(42L, requestDto);
+    }
+
+    @Test
+    void testDeleteDelivery_NotFound() {
+        doThrow(new RuntimeException("Delivery not found")).when(deliveryService).deleteDelivery(999L);
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> {
+            deliveryController.deleteDelivery(999L);
+        });
+
+        assertEquals("Delivery not found", ex.getMessage());
+        verify(deliveryService).deleteDelivery(999L);
+    }
+
+    @Test
+    void testGetAllDeliveriesByStatus_EmptyList() {
+        when(deliveryStatusService.getAllStatuses()).thenReturn(List.of());
+
+        List<DeliveryStatusResponseDto> result = deliveryController.getAllDeliveriesByStatus();
+
+        assertTrue(result.isEmpty());
+        verify(deliveryStatusService).getAllStatuses();
+    }
+
+
 }

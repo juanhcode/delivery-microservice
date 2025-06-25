@@ -44,4 +44,30 @@ class DeliveryStatusMapperTest {
         assertEquals(2L, result.get(1).getId());
         assertEquals("DELIVERED", result.get(1).getName());
     }
+
+    @Test
+    void testToDeliveryStatusResponseDto_NullInput() {
+        assertThrows(NullPointerException.class, () -> {
+            DeliveryStatusMapper.toDeliveryStatusResponseDto((DeliveryStatus) null);
+        });
+    }
+
+    @Test
+    void testToDeliveryStatusResponseDto_EmptyList() {
+        List<DeliveryStatusResponseDto> result = DeliveryStatusMapper.toDeliveryStatusResponseDto(List.of());
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void testToDeliveryStatusResponseDto_StatusWithNullFields() {
+        DeliveryStatus status = new DeliveryStatus(); // id y name null
+
+        DeliveryStatusResponseDto dto = DeliveryStatusMapper.toDeliveryStatusResponseDto(status);
+
+        assertNull(dto.getId());
+        assertNull(dto.getName());
+    }
+
 }

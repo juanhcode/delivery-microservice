@@ -165,4 +165,79 @@ class DeliveryServiceImplTest {
 
         assertEquals("Delivery not found with id 1", ex.getMessage());
     }
+
+    @Test
+    void getAllDeliveries_EmptyList_ReturnsEmpty() {
+        when(deliveryRepository.findAll()).thenReturn(List.of());
+
+        try (MockedStatic<DeliveryMapper> mocked = mockStatic(DeliveryMapper.class)) {
+            mocked.when(() -> DeliveryMapper.toDeliveryResponseDto(List.of(), deliveryStatusRepository))
+                    .thenReturn(List.of());
+
+            List<DeliveryResponseDto> result = deliveryService.getAllDeliveries();
+
+            assertNotNull(result);
+            assertTrue(result.isEmpty());
+            verify(deliveryRepository).findAll();
+        }
+    }
+
+
+    @Test
+    void createDelivery_NullRequest_ThrowsException() {
+        assertThrows(NullPointerException.class, () -> {
+            deliveryService.createDelivery(null);
+        });
+    }
+
+    @Test
+    void updateDelivery_StatusIdNull_StillUpdates() {
+        requestDto.setStatusId(null);
+        when(deliveryRepository.findById(1L)).thenReturn(Optional.of(delivery));
+        when(deliveryRepository.save(any())).thenReturn(delivery);
+
+        try (MockedStatic<DeliveryMapper> mocked = mockStatic(DeliveryMapper.class)) {
+            mocked.when(() -> DeliveryMapper.toDeliveryResponseDto(delivery, deliveryStatusRepository))
+                    .thenReturn(responseDto);
+
+            DeliveryResponseDto result = deliveryService.updateDelivery(1L, requestDto);
+
+            assertNotNull(result);
+            verify(deliveryRepository).save(delivery);
+            assertNull(delivery.getStatusId()); // importante
+        }
+    }
+
+    @Test
+    void createDelivery_SetsIdToNull_BeforeSave() {
+        Delivery mappedDelivery = new Delivery();
+        mappedDelivery.setId(100L); // Simula que viene con ID
+
+        when(deliveryRepository.save(any())).thenAnswer(invocation -> {
+            Delivery d = invocation.getArgument(0);
+            assertNull(d.getId()); // Verifica que se reinicializó
+            return delivery;
+        });
+
+        try (MockedStatic<DeliveryMapper> mocked = mockStatic(DeliveryMapper.class)) {
+            mocked.when(() -> DeliveryMapper.toDelivery(requestDto)).thenReturn(mappedDelivery);
+            mocked.when(() -> DeliveryMapper.toDeliveryResponseDto(delivery, deliveryStatusRepository)).thenReturn(responseDto);
+
+            DeliveryResponseDto result = deliveryService.createDelivery(requestDto);
+
+            assertNotNull(result);
+        }
+    }
+
+    @Test
+    void deleteDelivery_VerifiesOnlyIfExistsOnce() {
+        when(deliveryRepository.existsById(999L)).thenReturn(false);
+
+        assertThrows(RuntimeException.class, () -> {
+            deliveryService.deleteDelivery(999L);
+        });
+
+        verify(deliveryRepository, never()).deleteById(any());
+    }
+
 }
