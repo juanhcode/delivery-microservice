@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: delivery-microservice
-          image: juanhoyos/microservice:delivery-v7
+          image: juanhoyos/microservice:delivery-v8
           ports:
             - containerPort: 8087
           env:

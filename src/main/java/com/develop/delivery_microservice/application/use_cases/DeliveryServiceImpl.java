@@ -43,7 +43,6 @@ public class DeliveryServiceImpl implements DeliveryService {
         Delivery delivery = deliveryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Delivery not found with id " + id));
 
-        delivery.setPurchaseId(deliveryRequestDto.getPurchaseId());
         delivery.setDelivered(deliveryRequestDto.getDelivered());
         delivery.setStatusId(deliveryRequestDto.getStatusId());
 

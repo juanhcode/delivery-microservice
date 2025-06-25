@@ -11,7 +11,6 @@ public class DeliveryMapper {
 
     public  static Delivery toDelivery(DeliveryRequestDto deliveryRequestDto) {
         Delivery delivery = new Delivery();
-        delivery.setPurchaseId(deliveryRequestDto.getPurchaseId());
         delivery.setDelivered(deliveryRequestDto.getDelivered());
         delivery.setStatusId(deliveryRequestDto.getStatusId());
         delivery.setUserId(deliveryRequestDto.getUserId());
@@ -20,7 +19,6 @@ public class DeliveryMapper {
 
     public static DeliveryRequestDto toDeliveryRequestDto(Delivery delivery) {
         DeliveryRequestDto deliveryRequestDto = new DeliveryRequestDto();
-        deliveryRequestDto.setPurchaseId(delivery.getPurchaseId());
         deliveryRequestDto.setDelivered(delivery.getDelivered());
         deliveryRequestDto.setStatusId(delivery.getStatusId());
         deliveryRequestDto.setUserId(delivery.getUserId());
@@ -30,7 +28,6 @@ public class DeliveryMapper {
     public static DeliveryResponseDto toDeliveryResponseDto(Delivery delivery) {
         DeliveryResponseDto deliveryResponseDto = new DeliveryResponseDto();
         deliveryResponseDto.setId(delivery.getId());
-        deliveryResponseDto.setPurchaseId(delivery.getPurchaseId());
         deliveryResponseDto.setDelivered(delivery.getDelivered());
         deliveryResponseDto.setStatusId(delivery.getStatusId());
         deliveryResponseDto.setUserId(delivery.getUserId());

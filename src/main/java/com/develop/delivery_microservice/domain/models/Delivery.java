@@ -14,9 +14,6 @@ public class Delivery {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "purchase_id", nullable = false)
-    private Long purchaseId;
-
     @Column(name = "delivered", nullable = false)
     private Boolean delivered;
 
