@@ -1,4 +1,4 @@
-package com.develop.delivery_microservice.mappers;
+package com.develop.delivery_microservice.interfaces;
 
 import com.develop.delivery_microservice.application.dtos.DeliveryRequestDto;
 import com.develop.delivery_microservice.application.dtos.DeliveryResponseDto;
