@@ -5,6 +5,6 @@ import lombok.Data;
 public class DeliveryResponseDto {
     private Long id;
     private Boolean delivered;
-    private Long statusId;
+    private String status;
     private Long userId;
 }

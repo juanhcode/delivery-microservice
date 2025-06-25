@@ -6,6 +6,7 @@ import com.develop.delivery_microservice.domain.interfaces.DeliveryMapper;
 import com.develop.delivery_microservice.domain.interfaces.DeliveryService;
 import com.develop.delivery_microservice.domain.models.Delivery;
 import com.develop.delivery_microservice.infrastructure.repositories.DeliveryRepository;
+import com.develop.delivery_microservice.infrastructure.repositories.DeliveryStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,25 +18,29 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Autowired
     private DeliveryRepository deliveryRepository;
 
+    @Autowired
+    private DeliveryStatusRepository deliveryStatusRepository;
+
     @Override
     public List<DeliveryResponseDto> getAllDeliveries() {
         List<Delivery> deliveries = deliveryRepository.findAll();
-        return DeliveryMapper.toDeliveryResponseDto(deliveries);
+        return DeliveryMapper.toDeliveryResponseDto(deliveries, deliveryStatusRepository);
     }
 
     @Override
     public DeliveryResponseDto getDeliveryById(Long id) {
         Delivery delivery = deliveryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Delivery not found with id " + id));
-        return DeliveryMapper.toDeliveryResponseDto(delivery);
+        return DeliveryMapper.toDeliveryResponseDto(delivery, deliveryStatusRepository);
     }
+
 
     @Override
     public DeliveryResponseDto createDelivery(DeliveryRequestDto deliveryRequestDto) {
         Delivery delivery = DeliveryMapper.toDelivery(deliveryRequestDto);
-        delivery.setId(null); // Asegura que se genere automáticamente
+        delivery.setId(null);
         Delivery saved = deliveryRepository.save(delivery);
-        return DeliveryMapper.toDeliveryResponseDto(saved);
+        return DeliveryMapper.toDeliveryResponseDto(saved, deliveryStatusRepository);
     }
 
     @Override
@@ -47,7 +52,8 @@ public class DeliveryServiceImpl implements DeliveryService {
         delivery.setStatusId(deliveryRequestDto.getStatusId());
 
         Delivery updated = deliveryRepository.save(delivery);
-        return DeliveryMapper.toDeliveryResponseDto(updated);
+        return DeliveryMapper.toDeliveryResponseDto(updated, deliveryStatusRepository);
+
     }
 
     @Override
