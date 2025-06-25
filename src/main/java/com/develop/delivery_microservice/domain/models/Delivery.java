@@ -20,6 +20,6 @@ public class Delivery {
     @Column(name = "status_id", nullable = false)
     private Long statusId;
 
-    @Column(name="user_id", nullable = false)
+    @Column(name="user_id")
     private Long userId;
 }
