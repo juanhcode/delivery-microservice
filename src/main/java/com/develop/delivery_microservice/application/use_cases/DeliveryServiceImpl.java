@@ -47,13 +47,12 @@ public class DeliveryServiceImpl implements DeliveryService {
     public DeliveryResponseDto updateDelivery(Long id, DeliveryRequestDto deliveryRequestDto) {
         Delivery delivery = deliveryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Delivery not found with id " + id));
-
         delivery.setDelivered(deliveryRequestDto.getDelivered());
         delivery.setStatusId(deliveryRequestDto.getStatusId());
+        delivery.setUserId(deliveryRequestDto.getUserId());
 
         Delivery updated = deliveryRepository.save(delivery);
         return DeliveryMapper.toDeliveryResponseDto(updated, deliveryStatusRepository);
-
     }
 
     @Override
